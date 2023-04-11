@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - QR Code Generator copy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QR Code Generator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      text-align: center;
+    }
+    .qr-code {
+      max-width: 200px;
+      margin: 10px;
+    }
+    .center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .form-control-label {
+      font-weight: bold;
+      display: block;
+    }
+    #content {
+  margin-bottom: 30px;
+}
+
+  </style>
+</head>
+<body>
+  <canvas id="qr-code-canvas" style="display:none;"></canvas>
+  
+  <div class="center">
+    <div class="container-fluid">
+      <h1>QR Code Generator</h1>
+      <div class="text-center">
+        <img src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chld=L|0"
+             class="qr-code img-thumbnail img-responsive" alt="QR Code">
+
+      </div>
+
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-12 form-control-label" for="content">Enter URL or Upload MP3:</label>
+          <div class="col-sm-12">
+            <input type="text" class="form-control" id="content" placeholder="Enter URL">
+          </div>
+          <div class="col-sm-12">
+            <input type="file" class="form-control" id="mp3" accept="audio/*">
+          </div>
+        </div>
+        <div class="form-group"> 
+  <div class="col-sm-12">
+    <button type="button" class="btn btn-default" id="generate">Generate QR Code</button>
+    <button type="button" class="btn btn-default" id="download" disabled>Download QR Code</button>
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  function htmlEncode(value) {
+    return $('<div/>').text(value).html();
+  }
+
+  function generateQRCode() {
+    var content = $("#content").val();
+    var mp3 = $("#mp3")[0].files[0];
+    var reader = new FileReader();
+
+    reader.onload = function () {
+      var mp3Base64 = reader.result.split(",")[1];
+      var qrCodeUrl;
+
+      if (content && mp3) {
+        qrCodeUrl = "https://chart.googleapis.com/chart?cht=qr&chl=" + htmlEncode(content) + "|" + mp3Base64 + "&chs=160x160&chld=L|0";
+      } else if (content) {
+        qrCodeUrl = "https://chart.googleapis.com/chart?cht=qr&chl=" + htmlEncode(content) + "&chs=160x160&chld=L|0";
+      } else {
+        qrCodeUrl = "https://chart.googleapis.com/chart?cht=qr&chs=160x160&chld=L|0";
+      }
+
+      $(".qr-code").attr("src", qrCodeUrl);
+    };
+
+    if (mp3) {
+      reader.readAsDataURL(mp3);
+    } else {
+      var qrCodeUrl = "https://chart.googleapis.com/chart?cht=qr&chl=" + htmlEncode(content) + "&chs=160x160&chld=L|0";
+      $(".qr-code").attr("src", qrCodeUrl);
+    }
+  }
+
+  $(function () {
+    $("#generate").click(generateQRCode);
+    $("#mp3").change(generateQRCode);
+  });
+    
+    function downloadQRCode() {
+  var qrCodeUrl = $(".qr-code").attr("src");
+  var link = document.createElement("a");
+  link.href = qrCodeUrl;
+  link.download = "QR_Code.png";
+  link.click();
+}
+
+function enableDownloadButton() {
+  $("#download").prop("disabled", false);
+}
+
+$(function () {
+  $("#generate").click(function () {
+    generateQRCode();
+    enableDownloadButton();
+  });
+
+  $("#mp3").change(function () {
+    generateQRCode();
+    enableDownloadButton();
+  });
+
+  $("#download").click(downloadQRCode);
+});
+    
+    function downloadQRCode() {
+  var qrCodeImg = $(".qr-code");
+  var canvas = document.getElementById("qr-code-canvas");
+  var ctx = canvas.getContext("2d");
+  
+  var img = new Image();
+  img.crossOrigin = "Anonymous";
+  img.src = qrCodeImg.attr("src");
+  
+  img.onload = function () {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+    
+    canvas.toBlob(function (blob) {
+      var link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "QR_Code.png";
+      link.click();
+    });
+  };
+}
+
+$(function () {
+  $("#generate").click(function () {
+    generateQRCode();
+    enableDownloadButton();
+  });
+
+  $("#mp3").change(function () {
+    generateQRCode();
+    enableDownloadButton();
+  });
+
+  $("#download").click(downloadQRCode);
+});
+
+
+</script>
+
+</body>
+</html>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+</body>
+</html>
