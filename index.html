@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>CodePen - QR Code Generator copy</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<!DOCTYPE html>
 <html>
 <head>
   <title>QR Code Generator</title>
@@ -43,8 +33,21 @@
     #content {
   margin-bottom: 30px;
 }
+    .container {
+  height: 100vh;
+}
+  a[data-action="share/whatsapp/share"] i {
+  color: white !important;
+}
+
+
+
+
+
 
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-BDEqGMvAMZcnz5U6RNc8WSD27jCw1ybhHtoO6F9GEWg7+HTpt1HJeTBzLZ+JFqAL3nqckieKxoe+23KjYXuRA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 <body>
   <canvas id="qr-code-canvas" style="display:none;"></canvas>
@@ -72,6 +75,8 @@
   <div class="col-sm-12">
     <button type="button" class="btn btn-default" id="generate">Generate QR Code</button>
     <button type="button" class="btn btn-default" id="download" disabled>Download QR Code</button>
+    <a href="whatsapp://send?text=Check out this QR code: [QR code URL]" data-action="share/whatsapp/share"><i class="fab fa-whatsapp"></i></a>
+
   </div>
 </div>
 
@@ -183,9 +188,5 @@ $(function () {
 
 </script>
 
-</body>
-</html>
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 </body>
 </html>
